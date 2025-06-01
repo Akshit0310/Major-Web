@@ -50,12 +50,14 @@
 
         table {
             width: 100%;
+            min-width: 1000px;
             border-collapse: collapse;
-            background: white;
-            color: #333;
+            background: rgb(200, 136, 136);
+            color: #000000;
             border-radius: 10px;
             overflow: hidden;
         }
+
 
         th, td {
             padding: 12px;
@@ -64,10 +66,13 @@
         }
 
         .table-container {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 20px;
+            max-height: 500px;  /* increased from 300px */
+            max-width: 1800px;  /* set a max-width */
+            overflow: auto;     /* allow both X and Y scrolling */
+            margin: 10px auto;  /* center align */
         }
+
+
 
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -191,110 +196,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>Anomaly Detection Results</h1>
+        <h1>Anomaly Rows</h1>
 
         <!-- New CSS Gauge -->
-        <div class="gauge">
-            <div class="slice-colors">
-                <div class="st slice-item"></div>
-                <div class="st slice-item"></div>
-                <div class="st slice-item"></div>
-                <div class="st slice-item"></div>
-                <div class="st slice-item"></div>
-            </div>
-            <div class="needle" id="needle"></div>
-            <div class="gauge-center">
-                <div class="label">RISK</div>
-                <div class="number" id="gauge-label">HIGH</div>
-            </div>
-        </div>
+       
 
-        <div class="card">
-            <h2>Anomalous Traffic: {{ anomaly_percent }}%</h2>
-        </div>
+        
 
-     <div class="card">
-         <h2>Uploaded File</h2>
-        <p>Total Rows in Uploaded File: {{ total_rows_uploaded }}</p>
-
-        <h2>Anomaly Rows</h2>
-        <p>Total Anomaly Rows: {{ anomaly_row_count }}</p>  
-    </div>
     
 
 
-        <div class="card bar-chart">
-            <canvas id="classChart"></canvas>
+    
+
+        <div class="card table-container">
+            <h3>Detected Anomalies (Raw Rows)</h3>
+            {{ anomaly_rows | safe }}
         </div>
-
-        
     </div>
 
-    <div class="container">
-        <h1>Detailed Anomaly Description</h1>
-        <form action="{{ url_for('expand') }}" method="get">
-            <button type="submit">Analyze</button>
-        </form>
-    </div>
+ 
 
-    <script>
-        const labels = {{ class_labels | tojson }};
-        const data = {{ class_percents | tojson }};
-
-        const ctx = document.getElementById('classChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: '% of Traffic',
-                    data: data,
-                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1,
-                    borderRadius: 10
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: "#fff"
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            color: "#fff"
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: "#fff"
-                        }
-                    }
-                }
-            }
-        });
-
-        // Set Needle Angle Based on anomaly_percent
-        const anomalyPercent = {{ anomaly_percent | tojson }};
-        const minAngle = 0;   // 0%
-        const maxAngle = 140; // 100%
-        const angle = (anomalyPercent / 100) * (maxAngle); 
-        document.getElementById('needle').style.transform = `rotate(${angle}deg)`;
-
-        // Change Gauge Label Dynamically
-        const gaugeLabel = document.getElementById('gauge-label');
-        if (anomalyPercent < 30) {
-            gaugeLabel.textContent = 'LOW';
-        } else if (anomalyPercent < 70) {
-            gaugeLabel.textContent = 'MEDIUM';
-        } else {
-            gaugeLabel.textContent = 'HIGH';
-        }
-    </script>
 </body>
 </html>

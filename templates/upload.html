@@ -4,8 +4,57 @@
     <meta charset="UTF-8">
     <title>Upload CSV</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            position: relative;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("{{ url_for('static', filename='ezgif-3a57175e50cc1d.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(8px);  /* Adjust for 20% blur effect */
+            z-index: -1;
+        }
+
+        .main-heading {
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        h1 {
+            color: #a7bfd6;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+        }
+
+        .container {
+            background: rgba(0,0,0,0.6); /* semi-transparent background for better readability */
+            padding: 20px;
+            border-radius: 8px;
+            width: fit-content;
+            margin: 50px auto;
+        }
+    </style>
+
 </head>
 <body>
+     <h1 class="main-heading">Network Anomaly Detection</h1>
     <div class="container">
         <h1>Upload a CSV File</h1>
         <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data">
