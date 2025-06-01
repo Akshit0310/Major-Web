@@ -1,0 +1,5 @@
+SETUP
+
+1. Create a new folder as "uploads" in the project.
+2. In terminal run "python install requirements.txt"
+3. In terminal run "python run app.py"
